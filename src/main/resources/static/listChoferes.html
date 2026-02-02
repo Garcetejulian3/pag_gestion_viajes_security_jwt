@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+
+
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Gestión de Choferes - Registro y Control de viajes</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2b8cee",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "Noto Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        body {
+            font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;
+        }
+        .nav-item {
+            @apply flex items-center gap-2 px-4 py-2 text-[#617589] hover:text-primary transition-colors font-medium;
+        }
+        .nav-item-active {
+            @apply text-primary bg-primary/5 rounded-lg;
+        }
+        .table-header {
+            @apply px-6 py-4 text-left text-xs font-bold text-[#617589] uppercase tracking-wider border-b border-[#dbe0e6] dark:border-gray-800;
+        }
+        .table-cell {
+            @apply px-6 py-4 whitespace-nowrap text-sm text-[#111418] dark:text-gray-300 border-b border-[#f0f2f4] dark:border-gray-800;
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark min-h-screen">
+    <header class="sticky top-0 z-50 bg-white dark:bg-background-dark border-b border-[#dbe0e6] dark:border-gray-800">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="bg-primary/10 p-2 rounded-lg">
+                    <span class="material-symbols-outlined text-primary text-2xl"
+                        style="font-variation-settings: 'FILL' 1">directions_car</span>
+                </div>
+                <span class="text-[#111418] dark:text-white font-bold text-lg tracking-tight">Registro y Control de
+                    viajes</span>
+            </div>
+            <nav class="hidden md:flex items-center gap-2">
+                <a class="nav-item" href="home.html">
+                    <span class="material-symbols-outlined text-[20px]">person</span>
+                    Perfil
+                </a>
+                <a class="nav-item nav-item-active" href="listChoferes.html">
+                    <span class="material-symbols-outlined text-[20px]"
+                        style="font-variation-settings: 'FILL' 1">badge</span>
+                    Choferes
+                </a>
+                <a class="nav-item" href="listViajes.html">
+                    <span class="material-symbols-outlined text-[20px]">local_shipping</span>
+                    Envios
+                </a>
+                <a class="nav-item" href="listVehiculos.html">
+                    <span class="material-symbols-outlined text-[20px]">directions_car</span>
+                    Vehiculos
+                </a>
+                <div class="ml-4 pl-4 border-l border-[#dbe0e6] dark:border-gray-700">
+                    <button
+                        type="button"
+                        onclick="logout() "
+                        class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-sm font-bold transition-all shadow-sm">
+                        Cerrar sesión
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <main class="max-w-7xl mx-auto px-6 py-12">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+            <div>
+                <h1 class="text-[#111418] dark:text-white text-3xl font-black tracking-tight">Gestión de Choferes</h1>
+                <p class="text-[#617589] dark:text-gray-400 mt-1">Administre el personal de conducción y sus
+                    credenciales.</p>
+            </div>
+
+            <button 
+                type="button"
+                onclick="crearChofer()"
+                class="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white h-12 px-6 rounded-xl font-bold transition-all shadow-lg shadow-primary/20">
+                <span class="material-symbols-outlined">add</span>Guardar Chofer
+
+            </button>
+            
+        </div>
+        <section
+            class="bg-white dark:bg-gray-900 rounded-2xl border border-[#dbe0e6] dark:border-gray-800 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse">
+                    <thead>
+                        <tr class="bg-gray-50/50 dark:bg-gray-800/50">
+                            <th class="table-header">Nombre Completo</th>
+                            <th class="table-header">Número de Licencia</th>
+                            <th class="table-header">Estado</th>
+                            <th class="table-header text-right">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaChoferes"></tbody>
+                </table>
+            </div>
+
+        </section>
+    </main>
+    <footer class="bg-white dark:bg-background-dark border-t border-[#dbe0e6] dark:border-gray-800 py-12 mt-12">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary text-2xl">directions_car</span>
+                <span class="text-[#111418] dark:text-white font-bold">TravelLog © 2024</span>
+            </div>
+            <div class="flex gap-8 text-sm text-[#617589] dark:text-gray-400">
+                <a class="hover:text-primary" href="#">Términos</a>
+                <a class="hover:text-primary" href="#">Privacidad</a>
+                <a class="hover:text-primary" href="#">Soporte</a>
+                <a class="hover:text-primary" href="#">Ayuda</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/choferes.js"></script>
+    <script src="js/logout.js"></script>
+
+</body>
+
+</html>
